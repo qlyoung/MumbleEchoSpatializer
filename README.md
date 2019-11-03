@@ -5,10 +5,11 @@ Mumble spatial audio plugin for Echo VR.
 
 Installation
 ------------
-Copy the 32- or 64-bit DLL - depending on which version of Mumble you have
-installed - into `%AppData%/Mumble/Plugins`. Restart Mumble. Go to Configure ->
-Settings -> Plugins and very that "Echo VR (latest)" appears in the list. Check
-"Link to Game and Transmit Position".
+From the [Releases](https://github.com/qlyoung/MumbleEchoSpatializer/releases)
+page, copy the 32- or 64-bit DLL - depending on which version of Mumble you
+have installed - into `%AppData%/Mumble/Plugins`. Restart Mumble. Go to
+Configure -> Settings -> Plugins and very that "Echo VR (latest)" appears in
+the list. Check "Link to Game and Transmit Position".
 
 This has only been tested on Mumble 1.3.0.
 
