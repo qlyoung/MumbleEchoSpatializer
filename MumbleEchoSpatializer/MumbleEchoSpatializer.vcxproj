@@ -156,7 +156,7 @@
     <ClInclude Include="mumble_plugin_win32_internals.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="echovr-spatial.cpp" />
+    <ClCompile Include="echovr_spatial.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
