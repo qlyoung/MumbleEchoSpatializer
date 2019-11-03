@@ -16,8 +16,7 @@ This has only been tested on Mumble 1.3.0.
 Usage
 -----
 Audio will be spatialized while a match is in progress and actively being
-played. Launch countdown, post-score and other states will not have spatialized
-audio.
+played. Pre- and post-match states will not have spatialized audio.
 
 Mumble settings for positional audio will need to be adjusted for best
 experience. Go to Configure -> Settings -> Audio Output and check the
