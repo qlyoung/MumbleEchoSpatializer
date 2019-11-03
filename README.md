@@ -31,7 +31,10 @@ changes:
 
 Contributing
 ------------
-Only unlicensed contributions are accepted.
+Patches are welcome. Please use the following guideliens:
+- Patches should use the line endings and style of the changed file
+- Contributions must be public-domain, as specified in the
+  [Unlicense](https://unlicense.org)
 
 
 Building
