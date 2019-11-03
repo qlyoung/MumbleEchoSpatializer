@@ -60,15 +60,15 @@ static void fetchloop()
 	httplib::Client echoclient("127.0.0.1", 80);
 	using json = nlohmann::json;
 
+	std::vector<std::string> pos_states{"playing", "score", "round_start",
+					    "round_over"};
+
 	while (running) {
 		std::this_thread::sleep_for(
 			std::chrono::milliseconds(1000 / 60));
 		auto res = echoclient.Get("/session");
-		std::vector<std::string> pos_states{
-			"playing", "score", "round_start", "round_over"};
 
 		if (!res || res->status != 200) {
-
 			mtx.lock();
 			{
 				lastResult = {};
