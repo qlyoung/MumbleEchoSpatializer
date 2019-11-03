@@ -32,11 +32,13 @@
 #include "json.hpp"
 #include "mumble_plugin_main.h"
 
+#define ECHOVR_WINDOWNAME "Echo VR"
+#define ECHO_VERSION L"(latest)"
+#define THIS_PLUGIN_VERSION L"v0.1.1"
+
 std::thread fetchthread;
 std::mutex mtx;
 std::atomic<bool> running;
-
-#define ECHOVR_WINDOWNAME "Echo VR"
 
 struct LastPositionals {
 	float avatar_front[3];
@@ -201,9 +203,6 @@ void unlock()
 	running = false;
 	fetchthread.join();
 };
-
-#define ECHO_VERSION L"(latest)"
-#define THIS_PLUGIN_VERSION L"v0.1.1"
 
 static const std::wstring longdesc()
 {
