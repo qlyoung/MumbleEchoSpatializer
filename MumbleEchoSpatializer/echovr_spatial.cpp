@@ -36,6 +36,8 @@ std::thread fetchthread;
 std::mutex mtx;
 std::atomic<bool> running;
 
+#define ECHOVR_WINDOWNAME "Echo VR"
+
 struct LastPositionals {
 	float avatar_front[3];
 	float avatar_pos[3];
@@ -45,7 +47,13 @@ struct LastPositionals {
 	float camera_top[3];
 	bool clear;
 	bool noresp;
+	bool dead;
 } lastResult;
+
+bool is_echo_running()
+{
+	return (bool)FindWindowA(NULL, ECHOVR_WINDOWNAME);
+}
 
 static void fetchloop()
 {
@@ -60,10 +68,12 @@ static void fetchloop()
 			"playing", "score", "round_start", "round_over"};
 
 		if (!res || res->status != 200) {
+
 			mtx.lock();
 			{
 				lastResult = {};
 				lastResult.noresp = true;
+				lastResult.dead = !is_echo_running();
 			}
 			mtx.unlock();
 			continue;
@@ -154,10 +164,11 @@ static int fetch(float *avatar_pos, float *avatar_front, float *avatar_top,
 	struct LastPositionals res = lastResult;
 	mtx.unlock();
 
-	if (res.noresp)
+	if (res.dead) {
 		return false;
+	}
 
-	if (res.clear) {
+	if (res.clear || res.noresp) {
 		context.clear();
 		identity.clear();
 		return true;
@@ -176,11 +187,13 @@ static int fetch(float *avatar_pos, float *avatar_front, float *avatar_top,
 static int
 trylock(const std::multimap<std::wstring, unsigned long long int> &pids)
 {
-	if (!running) {
+	if (is_echo_running() && !running) {
 		running = true;
 		fetchthread = std::thread(fetchloop);
+		return true;
 	}
-	return true;
+
+	return false;
 }
 
 void unlock()
