@@ -53,9 +53,11 @@ static void fetchloop()
 	using json = nlohmann::json;
 
 	while (running) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 60));
+		std::this_thread::sleep_for(
+			std::chrono::milliseconds(1000 / 60));
 		auto res = echoclient.Get("/session");
-		std::vector<std::string> pos_states{ "playing", "score", "round_start", "round_over" };
+		std::vector<std::string> pos_states{
+			"playing", "score", "round_start", "round_over"};
 
 		if (!res || res->status != 200) {
 			mtx.lock();
@@ -70,7 +72,9 @@ static void fetchloop()
 		auto json_body = json::parse(res->body);
 		std::string state = json_body["game_status"].get<std::string>();
 
-		if (std::find(std::begin(pos_states), std::end(pos_states), state) == std::end(pos_states)) {
+		if (std::find(std::begin(pos_states), std::end(pos_states),
+			      state)
+		    == std::end(pos_states)) {
 			mtx.lock();
 			{
 				lastResult = {};
@@ -84,9 +88,11 @@ static void fetchloop()
 		auto pname = json_body["client_name"].get<std::string>();
 		json pos, forward, up;
 		bool found = false;
-		for (json::iterator t = teams.begin(); t != teams.end() && !found; ++t) {
+		for (json::iterator t = teams.begin();
+		     t != teams.end() && !found; ++t) {
 			auto players = (*t)["players"];
-			for (json::iterator p = players.begin(); p != players.end(); ++p) {
+			for (json::iterator p = players.begin();
+			     p != players.end(); ++p) {
 				if ((*p)["name"].get<std::string>() == pname) {
 					pos = (*p)["position"];
 					forward = (*p)["forward"];
@@ -134,11 +140,14 @@ static void fetchloop()
 	}
 }
 
-static int fetch(float *avatar_pos, float *avatar_front, float *avatar_top, float *camera_pos, float *camera_front, float *camera_top, std::string &context, std::wstring &identity)
+static int fetch(float *avatar_pos, float *avatar_front, float *avatar_top,
+		 float *camera_pos, float *camera_front, float *camera_top,
+		 std::string &context, std::wstring &identity)
 {
 
 	for (int i = 0; i < 3; i++) {
-		avatar_pos[i] = avatar_front[i] = avatar_top[i] = camera_pos[i] = camera_front[i] = camera_top[i] = 0.0f;
+		avatar_pos[i] = avatar_front[i] = avatar_top[i] =
+			camera_pos[i] = camera_front[i] = camera_top[i] = 0.0f;
 	}
 
 	mtx.lock();
@@ -164,7 +173,8 @@ static int fetch(float *avatar_pos, float *avatar_front, float *avatar_top, floa
 	return true;
 }
 
-static int trylock(const std::multimap<std::wstring, unsigned long long int> &pids)
+static int
+trylock(const std::multimap<std::wstring, unsigned long long int> &pids)
 {
 	if (!running) {
 		running = true;
@@ -173,7 +183,8 @@ static int trylock(const std::multimap<std::wstring, unsigned long long int> &pi
 	return true;
 }
 
-void unlock() {
+void unlock()
+{
 	running = false;
 	fetchthread.join();
 };
@@ -194,23 +205,18 @@ static int trylock1()
 	return trylock(std::multimap<std::wstring, unsigned long long int>());
 }
 
-static MumblePlugin gameplug = {
-	MUMBLE_PLUGIN_MAGIC,
-	description,
-	shortname,
-	NULL,
-	NULL,
-	trylock1,
-	unlock,
-	longdesc,
-	fetch
-};
+static MumblePlugin gameplug = {MUMBLE_PLUGIN_MAGIC,
+				description,
+				shortname,
+				NULL,
+				NULL,
+				trylock1,
+				unlock,
+				longdesc,
+				fetch};
 
-static MumblePlugin2 gameplug2 = {
-	MUMBLE_PLUGIN_MAGIC_2,
-	MUMBLE_PLUGIN_VERSION,
-	trylock
-};
+static MumblePlugin2 gameplug2 = {MUMBLE_PLUGIN_MAGIC_2, MUMBLE_PLUGIN_VERSION,
+				  trylock};
 
 extern "C" MUMBLE_PLUGIN_EXPORT MumblePlugin *getMumblePlugin()
 {
