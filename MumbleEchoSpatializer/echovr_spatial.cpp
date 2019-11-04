@@ -34,7 +34,7 @@
 
 #define ECHOVR_WINDOWNAME "Echo VR"
 #define ECHO_VERSION L"(latest)"
-#define THIS_PLUGIN_VERSION L"v0.1.2"
+#define THIS_PLUGIN_VERSION L"v1.0.0"
 
 std::thread fetchthread;
 std::mutex mtx;
