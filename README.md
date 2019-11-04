@@ -15,9 +15,9 @@ following into the address bar:
 ```
 Press enter and you should be in an empty directory. Copy the .dll files into
 this directory, then restart Mumble. In Mumble, go to Configure -> Settings ->
-Plugins and verify that "Echo VR (latest)" appears in the list. Check "Link to
-Game and Transmit Position" under "Options".  Go to "Audio Output" and check
-"Positional Audio".
+Plugins and verify that "Echo VR" appears in the list. Check "Link to Game and
+Transmit Position" under "Options".  Go to "Audio Output" and check "Positional
+Audio".
 
 Usage
 -----
