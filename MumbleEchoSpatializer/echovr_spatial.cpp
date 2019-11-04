@@ -63,9 +63,6 @@ static void fetchloop()
 	httplib::Client echoclient("127.0.0.1", 80);
 	using json = nlohmann::json;
 
-	std::vector<std::string> pos_states{"playing", "score", "round_start",
-					    "round_over"};
-
 	while (running) {
 		std::this_thread::sleep_for(
 			std::chrono::milliseconds(1000 / 60));
@@ -93,18 +90,6 @@ static void fetchloop()
 		p.identity =
 			std::wstring(client_name.begin(), client_name.end());
 		p.context = sessionid;
-
-		if (std::find(std::begin(pos_states), std::end(pos_states),
-			      state)
-		    == std::end(pos_states)) {
-
-			mtx.lock();
-			{
-				lastResult = p;
-			}
-			mtx.unlock();
-			continue;
-		}
 
 		json pos, forward, up;
 
