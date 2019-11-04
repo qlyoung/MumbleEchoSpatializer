@@ -7,11 +7,17 @@ Tested on Mumble 1.3.0.
 
 Installation
 ------------
-From the [Releases](https://github.com/qlyoung/MumbleEchoSpatializer/releases)
-page, download and copy both .dll files into `%AppData%/Mumble/Plugins`. Restart
-Mumble. Go to Configure -> Settings -> Plugins and verify that "Echo VR (latest)"
-appears in the list. Check "Link to Game and Transmit Position" under "Options".
-Go to "Audio Output" and check "Positional Audio".
+From the [Releases](https://github.com/qlyoung/MumbleEchoSpatializer/releases)    
+page, download both .dll files. Open an Explorer window and copy paste the        
+following into the address bar:
+```
+%AppData%/Mumble/Plugins
+```
+Press enter and you should be in an empty directory. Copy the .dll files into
+this directory, then restart Mumble. In Mumble, go to Configure -> Settings ->
+Plugins and verify that "Echo VR (latest)" appears in the list. Check "Link to
+Game and Transmit Position" under "Options".  Go to "Audio Output" and check
+"Positional Audio".
 
 Usage
 -----
