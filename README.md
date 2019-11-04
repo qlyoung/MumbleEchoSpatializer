@@ -39,8 +39,9 @@ from.
 
 Troubleshooting
 ---------------
-- Verify that Echo VR is running
 - Verify that Mumble is running
+- Verify that Echo VR is running
+- Join a match
 
 In Mumble settings, under "Audio Output":
 - Verify that the device is set to your Rift headphones
@@ -67,7 +68,12 @@ number appears next to the plugin name in Settings -> Plugins.
 If *none* of the above work:
 - **While in a match**, go to http://localhost/session in your browser, and
   verify that you get a text blob (page does not time out). If it is timing
-  out, *turn off your firewall* or make an exception for Echo VR.
+  out, try the following:
+  - Open an administrator command prompt - Win+R, type "cmd", Ctrl+Shift+Enter    
+  - Type "NET stop HTTP" and hit enter
+  - Try going to http://localhost/session in your browser again; if you get a     
+    text blob, the plugin should work
+  - If the above steps did not work, turn off Windows Firewall
 
 Contributing
 ------------
