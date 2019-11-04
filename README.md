@@ -32,7 +32,7 @@ changes:
 - Check "Headphones"
 - Minimum Distance = 1.0m
 - Maximum Distance >= 80.0m
-- Minimum Volume = 5%
+- Minimum Volume >= 10%
 
 Troubleshooting
 ---------------
