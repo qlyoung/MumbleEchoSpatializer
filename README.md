@@ -57,6 +57,10 @@ Once you have checked all of the above:
 - In the Mumble status pane (on the left), wait 30 seconds and ensure "Echo VR
   linked" appears. If it does not, start over from the beginning of this list.
 
+If you are in the same match with someone and can't hear positional audio from
+them, make sure you are both using the same version of the plugin. The version
+number appears next to the plugin name in Settings -> Plugins.
+
 If *none* of the above work:
 - **While in a match**, go to http://localhost/session in your browser, and
   verify that you get a text blob (page does not time out). If it is timing
