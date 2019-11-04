@@ -47,7 +47,8 @@ struct LastPositionals {
 	float camera_pos[3];
 	float camera_front[3];
 	float camera_top[3];
-	bool clear;
+	std::wstring identity;
+	std::string context;
 	bool noresp;
 	bool dead;
 } lastResult;
@@ -81,31 +82,41 @@ static void fetchloop()
 			continue;
 		}
 
+		LastPositionals p = {};
+
 		auto json_body = json::parse(res->body);
-		std::string state = json_body["game_status"].get<std::string>();
+
+		auto state = json_body["game_status"].get<std::string>();
+		auto client_name = json_body["client_name"].get<std::string>();
+		auto sessionid = json_body["sessionid"].get<std::string>();
+
+		p.identity =
+			std::wstring(client_name.begin(), client_name.end());
+		p.context = sessionid;
 
 		if (std::find(std::begin(pos_states), std::end(pos_states),
 			      state)
 		    == std::end(pos_states)) {
+
 			mtx.lock();
 			{
-				lastResult = {};
-				lastResult.clear = true;
+				lastResult = p;
 			}
 			mtx.unlock();
 			continue;
 		}
 
-		auto teams = json_body["teams"];
-		auto pname = json_body["client_name"].get<std::string>();
 		json pos, forward, up;
+
+		auto teams = json_body["teams"];
 		bool found = false;
 		for (json::iterator t = teams.begin();
 		     t != teams.end() && !found; ++t) {
 			auto players = (*t)["players"];
 			for (json::iterator p = players.begin();
 			     p != players.end(); ++p) {
-				if ((*p)["name"].get<std::string>() == pname) {
+				if ((*p)["name"].get<std::string>()
+				    == client_name) {
 					pos = (*p)["position"];
 					forward = (*p)["forward"];
 					up = (*p)["up"];
@@ -117,14 +128,12 @@ static void fetchloop()
 		if (!found) {
 			mtx.lock();
 			{
-				lastResult = {};
-				lastResult.clear = true;
+				lastResult = p;
 			}
 			mtx.unlock();
 			continue;
 		}
 
-		LastPositionals p = {};
 
 		p.avatar_pos[0] = -pos[0].get<float>();
 		p.avatar_pos[1] = pos[1].get<float>();
@@ -170,12 +179,13 @@ static int fetch(float *avatar_pos, float *avatar_front, float *avatar_top,
 		return false;
 	}
 
-	if (res.clear || res.noresp) {
+	if (res.noresp) {
 		context.clear();
-		identity.clear();
 		return true;
 	}
 
+	context = res.context;
+	identity = res.identity;
 	memcpy(avatar_pos, &res.avatar_pos, sizeof(res.avatar_pos));
 	memcpy(avatar_front, &res.avatar_front, sizeof(res.avatar_front));
 	memcpy(avatar_top, &res.avatar_top, sizeof(res.avatar_top));
