@@ -34,6 +34,9 @@ changes:
 - Maximum Distance >= 80.0m
 - Minimum Volume <= 20%
 
+You can adjust these to your preferences, but these are good defaults to start
+from.
+
 Troubleshooting
 ---------------
 - Verify that Echo VR is running
