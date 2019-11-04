@@ -7,8 +7,8 @@ Tested on Mumble 1.3.0.
 
 Installation
 ------------
-From the [Releases](https://github.com/qlyoung/MumbleEchoSpatializer/releases)    
-page, download both .dll files. Open an Explorer window and copy paste the        
+From the [Releases](https://github.com/qlyoung/MumbleEchoSpatializer/releases)
+page, download both .dll files. Open an Explorer window and copy paste the
 following into the address bar:
 ```
 %AppData%/Mumble/Plugins
