@@ -31,7 +31,7 @@ changes:
 
 Contributing
 ------------
-Patches are welcome. Please use the following guideliens:
+Patches are welcome. Please use the following guidelines:
 - Patches should use the line endings and style of the changed file
 - Contributions must be public-domain, as specified in the
   [Unlicense](https://unlicense.org)
