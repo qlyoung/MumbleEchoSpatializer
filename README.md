@@ -15,8 +15,8 @@ Go to "Audio Output" and check "Positional Audio".
 
 Usage
 -----
-Audio will be spatialized while a match is in progress and actively being
-played. Pre- and post-match states will not have spatialized audio.
+Audio will be spatialized while you are in a match with others using the plugin.
+The lobby and other game areas (menus, tutorials etc) are not spatialized.
 
 Mumble settings for positional audio will need to be adjusted for best
 experience. Go to Configure -> Settings -> Audio Output and check the
