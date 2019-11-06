@@ -35,12 +35,13 @@
 #define ECHOVR_WINDOWNAME "Echo VR"
 #define ECHO_VERSION L"(latest)"
 #define THIS_PLUGIN_VERSION L"v1.0.0"
+#define UPDATE_FREQUENCY 60
 
 std::thread fetchthread;
 std::mutex mtx;
 std::atomic<bool> running;
 
-struct LastPositionals {
+struct EchoPositionState {
 	float avatar_front[3];
 	float avatar_pos[3];
 	float avatar_top[3];
@@ -51,35 +52,50 @@ struct LastPositionals {
 	std::string context;
 	bool noresp;
 	bool dead;
-} lastResult;
+} latestState;
 
 bool is_echo_running()
 {
 	return (bool)FindWindowA(NULL, ECHOVR_WINDOWNAME);
 }
 
+static inline void update(EchoPositionState &p)
+{
+	mtx.lock();
+	{
+		latestState = p;
+	}
+	mtx.unlock();
+}
+
 static void fetchloop()
 {
-	httplib::Client echoclient("127.0.0.1", 80);
+	httplib::Client echoclient("127.0.0.1", 80, 1);
 	using json = nlohmann::json;
 
+	auto start = std::chrono::steady_clock::now();
+	auto base = std::chrono::milliseconds(1000 / UPDATE_FREQUENCY);
+
 	while (running) {
-		std::this_thread::sleep_for(
-			std::chrono::milliseconds(1000 / 60));
+		auto sleeptime = std::max(
+			std::chrono::milliseconds(0),
+			std::chrono::duration_cast<std::chrono::milliseconds>(
+				base
+				- (std::chrono::steady_clock::now() - start)));
+		std::this_thread::sleep_for(sleeptime);
+		start = std::chrono::steady_clock::now();
+
 		auto res = echoclient.Get("/session");
 
+		EchoPositionState p = {};
+
 		if (!res || res->status != 200) {
-			mtx.lock();
-			{
-				lastResult = {};
-				lastResult.noresp = true;
-				lastResult.dead = !is_echo_running();
-			}
-			mtx.unlock();
+			p.noresp = true;
+			p.dead = !is_echo_running();
+			update(p);
 			continue;
 		}
 
-		LastPositionals p = {};
 
 		auto json_body = json::parse(res->body);
 
@@ -111,11 +127,7 @@ static void fetchloop()
 		}
 
 		if (!found) {
-			mtx.lock();
-			{
-				lastResult = p;
-			}
-			mtx.unlock();
+			update(p);
 			continue;
 		}
 
@@ -138,11 +150,7 @@ static void fetchloop()
 			p.camera_top[i] = p.avatar_top[i];
 		}
 
-		mtx.lock();
-		{
-			lastResult = p;
-		}
-		mtx.unlock();
+		update(p);
 	}
 }
 
@@ -157,7 +165,7 @@ static int fetch(float *avatar_pos, float *avatar_front, float *avatar_top,
 	}
 
 	mtx.lock();
-	struct LastPositionals res = lastResult;
+	struct EchoPositionState res = latestState;
 	mtx.unlock();
 
 	if (res.dead) {
