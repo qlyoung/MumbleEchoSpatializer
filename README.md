@@ -1,7 +1,9 @@
 MumbleEchoSpatializer
 =====================
 
-Mumble spatial audio plugin for Echo VR.
+Mumble spatial audio plugin for Echo VR. Using Mumble and this plugin allows    
+you to have private comms in Echo Arena while still hearing your teammates      
+relative to their position in the game, like you do when using the in-game VoIP.
 
 Tested on Mumble 1.3.0.
 
@@ -36,6 +38,10 @@ changes:
 
 You can adjust these to your preferences, but these are good defaults to start
 from.
+
+Once you have made these changes, join a Mumble channel with your teammates,
+and join a match together in Echo Arena. You should be able to hear your
+teammates' voices relative to their position in the game.
 
 Troubleshooting
 ---------------
