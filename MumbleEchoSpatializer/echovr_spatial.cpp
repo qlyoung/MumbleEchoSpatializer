@@ -34,7 +34,7 @@
 
 #define ECHOVR_WINDOWNAME "Echo VR"
 #define ECHO_VERSION L"(latest)"
-#define THIS_PLUGIN_VERSION L"v1.0.0"
+#define THIS_PLUGIN_VERSION L"v1.0.1"
 #define UPDATE_FREQUENCY 60
 
 std::thread fetchthread;
