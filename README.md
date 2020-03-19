@@ -75,11 +75,14 @@ If *none* of the above work:
 - **While in a match**, go to http://localhost/session in your browser, and
   verify that you get a text blob (page does not time out). If it is timing
   out, try the following:
-  - Open an administrator command prompt - Win+R, type "cmd", Ctrl+Shift+Enter    
+  - If you use Skype, completely close it and try again
+  - If you do not use Skype, open an administrator command prompt - Win+R, type
+    "cmd", Ctrl+Shift+Enter
   - Type "NET stop HTTP" and hit enter
-  - Try going to http://localhost/session in your browser again; if you get a     
+  - Try going to http://localhost/session in your browser again; if you get a
     text blob, the plugin should work
   - If the above steps did not work, turn off Windows Firewall
+
 
 Contributing
 ------------
