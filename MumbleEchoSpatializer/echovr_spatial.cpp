@@ -33,8 +33,8 @@
 #include "mumble_plugin_main.h"
 
 #define ECHOVR_WINDOWNAME "Echo VR"
-#define ECHO_VERSION L"(latest)"
-#define THIS_PLUGIN_VERSION L"v1.0.1"
+#define ECHO_VERSION L"27.0.439148.0+"
+#define THIS_PLUGIN_VERSION L"v2.0.0"
 #define UPDATE_FREQUENCY 60
 
 std::thread fetchthread;
@@ -70,7 +70,7 @@ static inline void update(EchoPositionState &p)
 
 static void fetchloop()
 {
-	httplib::Client echoclient("127.0.0.1", 80, 1);
+	httplib::Client echoclient("127.0.0.1", 6721, 1);
 	using json = nlohmann::json;
 
 	auto start = std::chrono::steady_clock::now();
