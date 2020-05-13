@@ -34,7 +34,7 @@
 
 #define ECHOVR_WINDOWNAME "Echo VR"
 #define ECHO_VERSION L"27.0.439148.0+"
-#define THIS_PLUGIN_VERSION L"v2.0.0"
+#define THIS_PLUGIN_VERSION L"v2.0.1"
 #define UPDATE_FREQUENCY 60
 
 std::thread fetchthread;
@@ -96,58 +96,63 @@ static void fetchloop()
 			continue;
 		}
 
+		try {
+			auto json_body = json::parse(res->body);
 
-		auto json_body = json::parse(res->body);
+			auto state =
+				json_body["game_status"].get<std::string>();
+			auto client_name =
+				json_body["client_name"].get<std::string>();
+			auto sessionid =
+				json_body["sessionid"].get<std::string>();
 
-		auto state = json_body["game_status"].get<std::string>();
-		auto client_name = json_body["client_name"].get<std::string>();
-		auto sessionid = json_body["sessionid"].get<std::string>();
+			p.identity = std::wstring(client_name.begin(),
+						  client_name.end());
+			p.context = sessionid;
 
-		p.identity =
-			std::wstring(client_name.begin(), client_name.end());
-		p.context = sessionid;
+			json pos, forward, up;
 
-		json pos, forward, up;
-
-		auto teams = json_body["teams"];
-		bool found = false;
-		for (json::iterator t = teams.begin();
-		     t != teams.end() && !found; ++t) {
-			auto players = (*t)["players"];
-			for (json::iterator p = players.begin();
-			     p != players.end(); ++p) {
-				if ((*p)["name"].get<std::string>()
-				    == client_name) {
-					pos = (*p)["position"];
-					forward = (*p)["forward"];
-					up = (*p)["up"];
-					found = true;
+			auto teams = json_body["teams"];
+			bool found = false;
+			for (json::iterator t = teams.begin();
+			     t != teams.end() && !found; ++t) {
+				auto players = (*t)["players"];
+				for (json::iterator p = players.begin();
+				     p != players.end(); ++p) {
+					if ((*p)["name"].get<std::string>()
+					    == client_name) {
+						pos = (*p)["position"];
+						forward = (*p)["forward"];
+						up = (*p)["up"];
+						found = true;
+					}
 				}
 			}
-		}
 
-		if (!found) {
-			update(p);
+			if (!found) {
+				update(p);
+				continue;
+			}
+
+			p.avatar_pos[0] = -pos[0].get<float>();
+			p.avatar_pos[1] = pos[1].get<float>();
+			p.avatar_pos[2] = pos[2].get<float>();
+
+			p.avatar_front[0] = -forward[0].get<float>();
+			p.avatar_front[1] = forward[1].get<float>();
+			p.avatar_front[2] = forward[2].get<float>();
+
+			p.avatar_top[0] = -up[0].get<float>();
+			p.avatar_top[1] = up[1].get<float>();
+			p.avatar_top[2] = up[2].get<float>();
+
+			for (int i = 0; i < 3; i++) {
+				p.camera_pos[i] = p.avatar_pos[i];
+				p.camera_front[i] = p.avatar_front[i];
+				p.camera_top[i] = p.avatar_top[i];
+			}
+		} catch (...) {
 			continue;
-		}
-
-
-		p.avatar_pos[0] = -pos[0].get<float>();
-		p.avatar_pos[1] = pos[1].get<float>();
-		p.avatar_pos[2] = pos[2].get<float>();
-
-		p.avatar_front[0] = -forward[0].get<float>();
-		p.avatar_front[1] = forward[1].get<float>();
-		p.avatar_front[2] = forward[2].get<float>();
-
-		p.avatar_top[0] = -up[0].get<float>();
-		p.avatar_top[1] = up[1].get<float>();
-		p.avatar_top[2] = up[2].get<float>();
-
-		for (int i = 0; i < 3; i++) {
-			p.camera_pos[i] = p.avatar_pos[i];
-			p.camera_front[i] = p.avatar_front[i];
-			p.camera_top[i] = p.avatar_top[i];
 		}
 
 		update(p);
