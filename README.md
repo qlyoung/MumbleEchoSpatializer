@@ -72,16 +72,16 @@ them, make sure you are both using the same version of the plugin. The version
 number appears next to the plugin name in Settings -> Plugins.
 
 If *none* of the above work:
-- **While in a match**, go to http://localhost/session in your browser, and
+- **While in a match**, go to http://localhost:6721/session in your browser, and
   verify that you get a text blob (page does not time out). If it is timing
-  out, try the following:
-  - If you use Skype, completely close it and try again
-  - If you do not use Skype, open an administrator command prompt - Win+R, type
-    "cmd", Ctrl+Shift+Enter
-  - Type "NET stop HTTP" and hit enter
-  - Try going to http://localhost/session in your browser again; if you get a
-    text blob, the plugin should work
-  - If the above steps did not work, turn off Windows Firewall
+  out, you either have a misconfigured firewall or something else on your computer
+  is bound to port 6721 (unlikely). To check:
+  - Open an administrator command prompt - Win+R, type "cmd", Ctrl+Shift+Enter
+  - Run this command: `netstat -b -p TCP`
+  - Look for "6721". If the program name in `[brackets]` is not `echovr.exe`, you
+    need to close that program and restart Echo VR. After doing that:
+  - Try going to http://localhost:6721/session in your browser again once you are
+    in a match; if you get a text blob, the plugin should work.
 
 
 Contributing
