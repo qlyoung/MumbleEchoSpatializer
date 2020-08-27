@@ -21,6 +21,8 @@ Plugins and verify that "Echo VR" appears in the list. Check "Link to Game and
 Transmit Position" under "Options".  Go to "Audio Output" and check "Positional
 Audio".
 
+Make sure to set "Enable API Access" in the in-game settings menu to true (it defaults to false), otherwise you will not have spatial audio
+
 Usage
 -----
 Audio will be spatialized while you are in a match with others using the plugin.
@@ -47,6 +49,7 @@ Troubleshooting
 ---------------
 - Verify that Mumble is running
 - Verify that Echo VR is running
+- Verify that you have set "Enable API Access" to true in the in-game settings
 - Join a match
 
 In Mumble settings, under "Audio Output":
