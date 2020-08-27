@@ -33,8 +33,8 @@
 #include "mumble_plugin_main.h"
 
 #define ECHOVR_WINDOWNAME "Echo VR"
-#define ECHO_VERSION L"27.0.439148.0+"
-#define THIS_PLUGIN_VERSION L"v2.0.1"
+#define ECHO_VERSION L"28.0.465502.0+"
+#define THIS_PLUGIN_VERSION L"v3.0.0"
 #define UPDATE_FREQUENCY 60
 
 std::thread fetchthread;
@@ -121,9 +121,10 @@ static void fetchloop()
 				     p != players.end(); ++p) {
 					if ((*p)["name"].get<std::string>()
 					    == client_name) {
-						pos = (*p)["position"];
-						forward = (*p)["forward"];
-						up = (*p)["up"];
+						pos = (*p)["head"]["position"];
+						forward =
+							(*p)["head"]["forward"];
+						up = (*p)["head"]["up"];
 						found = true;
 					}
 				}
