@@ -21,7 +21,8 @@ Plugins and verify that "Echo VR" appears in the list. Check "Link to Game and
 Transmit Position" under "Options".  Go to "Audio Output" and check "Positional
 Audio".
 
-Make sure to set "Enable API Access" in the in-game settings menu to true (it defaults to false), otherwise you will not have spatial audio
+Make sure to set "Enable API Access" in the in-game settings menu to true (it
+defaults to false), otherwise you will not have spatial audio.
 
 Usage
 -----
